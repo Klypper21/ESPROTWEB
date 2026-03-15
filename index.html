@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESPROT | Empresa de Seguridad y Protección de Sancti Spíritus</title>
+    <!-- Preconnect a CDNs para recursos críticos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="prefetch" href="https://images.unsplash.com">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+
+    <!-- Header dinámico cargado desde header.html -->
+    <div id="header-container"></div>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero">
+            <div class="hero-bg" data-speed="0.5"></div>
+            <div class="floating-shield">
+    <img src="imgs/logo3.png" alt="ESPROT Logo" loading="lazy">
+</div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1>
+                        <span class="line">Seguridad y Protección</span>
+                        <span class="line" style="color: var(--primary)">Sancti Spíritus</span>
+                    </h1>
+                    <p>Protegemos sus activos más valiosos con tecnología de punta y personal élite. Experiencia probada en seguridad integral.</p>
+                    <a style="display: none" href="SHOP.html" class="btn btn-primary magnetic"><i class="fas fa-store"></i> TIENDA</a>
+                </div>
+            </div>
+        </section>
+
+       <!-- SERVICES SECTION -->
+<section id="servicios" class="services-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Nuestros Servicios Especializados</h2>
+            <p>Soluciones integrales diseñadas a la medida de su tranquilidad.</p>
+        </div>
+
+        <div class="services-grid">
+            <!-- Servicio 1 -->
+            <div class="service-card">
+                <div class="carousel-container" data-carousel="1">
+                    <div class="carousel-slide">
+                        <img src="imgs/custodio.webp" alt="Seguridad Personal" loading="lazy">
+                        <img src="imgs/custodio1.jpg" alt="Agentes" loading="lazy">
+                        
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveSlide(-1, 0)">&#10094;</button>
+                    <button class="carousel-btn next" onclick="moveSlide(1, 0)">&#10095;</button>
+                </div>
+                <div class="service-info">
+                    <h3>Equipo de Custodio</h3>
+                    <p>Protección integral para locales con custodios, sistemas de alarma, videovigilancia y respuesta a emergencias.</p>
+                </div>
+            </div>
+
+            <!-- Servicio 2 -->
+            <div class="service-card">
+                <div class="carousel-container" data-carousel="2">
+                    <div class="carousel-slide">
+                        <img src="imgs/cctv.jpg" alt="CCTV" loading="lazy">
+                        
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveSlide(-1, 1)">&#10094;</button>
+                    <button class="carousel-btn next" onclick="moveSlide(1, 1)">&#10095;</button>
+                </div>
+                <div class="service-info">
+                    <h3>Vigilancia 24/7</h3>
+                    <p>Sistemas de monitoreo inteligente con IA y patrullaje físico preventivo para instalaciones críticas.</p>
+                </div>
+            </div>
+
+            <!-- Servicio 3 -->
+            <div class="service-card">
+                <div class="carousel-container" data-carousel="3">
+                    <div class="carousel-slide">
+                        <img src="imgs/extintor_3.webp" alt="Extintor 3" loading="lazy">
+                        <img src="imgs/extintor_2.jpg" alt="Extintor 2" loading="lazy">
+                        <img src="imgs/extintor_4.webp" alt="Extintor 4" loading="lazy">
+                        
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveSlide(-1, 2)">&#10094;</button>
+                    <button class="carousel-btn next" onclick="moveSlide(1, 2)">&#10095;</button>
+                </div>
+                <div class="service-info">
+                    <h3>Llenado de Extintores</h3>
+                    <p>Servicio de llenado y certificación de extintores</p>
+                </div>
+            </div>
+
+            <!-- NUEVO SERVICIO 4 - Manualidades Impresas -->
+            <div class="service-card">
+                <div class="carousel-container" data-carousel="4">
+                    <div class="carousel-slide">
+                        <img src="imgs/manualidades.webp" alt="manualidades" loading="lazy">
+                        <img src="imgs/manualidades2.webp" alt="manualidades2" loading="lazy">
+                        
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveSlide(-1, 3)">&#10094;</button>
+                    <button class="carousel-btn next" onclick="moveSlide(1, 3)">&#10095;</button>
+                </div>
+                <div class="service-info">
+                    <h3>Manualidades Impresas</h3>
+                    <p>Creación y fabricación de manualidades impresas para eventos y promociones.</p>
+                </div>
+            </div>
+
+            <!-- NUEVO SERVICIO 5 - Sistema de alarmas -->
+            <div class="service-card">
+                <div class="carousel-container" data-carousel="5">
+                    <div class="carousel-slide">
+                        <img src="imgs/alarma.webp" alt="alarma" loading="lazy">
+                        
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveSlide(-1, 4)">&#10094;</button>
+                    <button class="carousel-btn next" onclick="moveSlide(1, 4)">&#10095;</button>
+                </div>
+                <div class="service-info">
+                    <h3>Sistemas de alarmas</h3>
+                    <p>Instalación y mantenimiento de sistemas de alarma para protección integral de propiedades e instalaciones.</p>
+                </div>
+            </div>
+
+            <!-- NUEVO SERVICIO 6 - Transporte de Valores -->
+            <div class="service-card">
+                <div class="carousel-container" data-carousel="6">
+                    <div class="carousel-slide">
+                        <img src="imgs/valores.webp" alt="Transporte de Valores" loading="lazy">
+                        
+                    </div>
+                    <button class="carousel-btn prev" onclick="moveSlide(-1, 5)">&#10094;</button>
+                    <button class="carousel-btn next" onclick="moveSlide(1, 5)">&#10095;</button>
+                </div>
+                <div class="service-info">
+                    <h3>Transporte de Valores</h3>
+                    <p>Custodia y transporte seguro de documentos, efectivo y objetos de valor con vehículos y personal capacitado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- LOCATION SECTION -->
+<section id="ubicacion" class="location-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>¿Dónde nos encontramos?</h2>
+            <p>Cobertura nacional con sede principal y extensiones estratégicas</p>
+        </div>
+
+        <div class="location-content">
+            <!-- Sección Sede Principal con Imagen -->
+            <div class="location-info">
+                <h3>Sede Principal</h3>
+                <div class="sede-container">
+                    <div class="sede-imagen">
+                        <img src="imgs/empresa_ai.webp" alt="Sede Principal ESPROT Sancti Spíritus" class="sede-img" loading="lazy">
+                        <div class="sede-overlay">
+                            <span>Centro de Operaciones 24/7</span>
+                        </div>
+                    </div>
+                    <div class="sede-texto">
+                        <p>Nuestra sede central se encuentra en <strong>Sancti Spíritus</strong>, desde donde coordinamos todas nuestras operaciones a nivel nacional. Contamos con instalaciones de última generación y un centro de monitoreo operativo 24/7.</p>
+                        <div class="sede-details">
+                            <div class="detail-item">
+                                <i class="fas fa-building"></i>
+                                <span>Estructura moderna con tecnología avanzada</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-desktop"></i>
+                                <span>Sala de monitoreo con pantallas de 4K</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Sistemas de seguridad redundantes</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>Equipo de respuesta rápida 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección UEB Municipales -->
+                <div class="ueb-section">
+                    <h4>UEB Municipales en la Provincia</h4>
+                    <p class="ueb-intro">Extendemos nuestra cobertura a través de Unidades Empresariales de Base en los municipios más importantes:</p>
+                    
+                    <div class="ueb-grid">
+                        <!-- Yaguajay -->
+                        <div class="ueb-card">
+                            <div class="flip-card-inner">
+                                <!-- FRENTE -->
+                                <div class="flip-card-front">
+                                    <div class="ueb-imagen">
+                                        <img src="imgs/yaguajay.jpg" alt="UEB Yaguajay">
+                                        <div class="ueb-overlay">
+                                            <span>UEB Agencia Yaguajay</span>
+                                        </div>
+                                    </div>
+                                    <div class="ueb-info">
+                                        <h5>Yaguajay</h5>
+                                        <p>Cobertura en el municipio norteño con protección a zonas agrícolas y turísticas.</p>
+                                        <div class="ueb-stats">
+                                            <span><i class="fas fa-user-shield"></i> 15 agentes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- REVERSO -->
+                                <div class="flip-card-back">
+                                    <div class="back-content">
+                                        <h5>Servicios Disponibles</h5>
+                                        <ul class="services-list">
+                                            <li><i class="fas fa-check"></i> Patrullaje preventivo</li>
+                                            <li><i class="fas fa-check"></i> Vigilancia agrícola</li>
+                                            <li><i class="fas fa-check"></i> Protección de eventos</li>
+                                            <li><i class="fas fa-check"></i> Respuesta 24/7</li>
+                                        </ul>
+                                        <div class="back-footer">
+                                            <p><strong>Tiempo respuesta:</strong> 8 minutos</p>
+                                        </div>
+                                    </div>
+                                    <div class="back-logo">
+                                        <img src="imgs/logo3.png" alt="ESPROT Logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Cabaiguán -->
+                        <div class="ueb-card">
+                            <div class="flip-card-inner">
+                                <!-- FRENTE -->
+                                <div class="flip-card-front">
+                                    <div class="ueb-imagen">
+                                        <img src="imgs/cabaiguan1.webp" alt="UEB Cabaiguán">
+                                        <div class="ueb-overlay">
+                                            <span>UEB Cabaiguán</span>
+                                        </div>
+                                    </div>
+                                    <div class="ueb-info">
+                                        <h5>Cabaiguán</h5>
+                                        <p>Protección especializada para zonas industriales y complejos residenciales.</p>
+                                        <div class="ueb-stats">
+                                            <span><i class="fas fa-user-shield"></i> 12 agentes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- REVERSO -->
+                                <div class="flip-card-back">
+                                    <div class="back-content">
+                                        <h5>Servicios Disponibles</h5>
+                                        <ul class="services-list">
+                                            <li><i class="fas fa-check"></i> Seguridad industrial</li>
+                                            <li><i class="fas fa-check"></i> Control de acceso</li>
+                                            <li><i class="fas fa-check"></i> Monitoreo CCTV</li>
+                                            <li><i class="fas fa-check"></i> Respuesta inmediata</li>
+                                        </ul>
+                                        <div class="back-footer">
+                                            <p><strong>Tiempo respuesta:</strong> 5 minutos</p>
+                                        </div>
+                                    </div>
+                                    <div class="back-logo">
+                                        <img src="imgs/logo3.png" alt="ESPROT Logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sancti Spíritus 1 -->
+                        <div class="ueb-card">
+                            <div class="flip-card-inner">
+                                <!-- FRENTE -->
+                                <div class="flip-card-front">
+                                    <div class="ueb-imagen">
+                                        <img src="imgs/ss_1.jpg" alt="UEB Sancti Spíritus 1">
+                                        <div class="ueb-overlay">
+                                            <span>UEB Sancti Spíritus 1</span>
+                                        </div>
+                                    </div>
+                                    <div class="ueb-info">
+                                        <h5>UEB Sancti Spíritus 1</h5>
+                                        <p>Unidad especializada en protección integral para zonas industriales y comerciales.</p>
+                                        <div class="ueb-stats">
+                                            <span><i class="fas fa-user-shield"></i> 15 agentes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- REVERSO -->
+                                <div class="flip-card-back">
+                                    <div class="back-content">
+                                        <h5>Servicios Disponibles</h5>
+                                        <ul class="services-list">
+                                            <li><i class="fas fa-check"></i> Protección comercial</li>
+                                            <li><i class="fas fa-check"></i> Vigilancia integral</li>
+                                            <li><i class="fas fa-check"></i> Seguridad ejecutiva</li>
+                                            <li><i class="fas fa-check"></i> Análisis de riesgo</li>
+                                        </ul>
+                                        <div class="back-footer">
+                                            <p><strong>Tiempo respuesta:</strong> 4 minutos</p>
+                                        </div>
+                                    </div>
+                                    <div class="back-logo">
+                                        <img src="imgs/logo3.png" alt="ESPROT Logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Servicios Técnicos -->
+                        <div class="ueb-card">
+                            <div class="flip-card-inner">
+                                <!-- FRENTE -->
+                                <div class="flip-card-front">
+                                    <div class="ueb-imagen">
+                                        <img src="imgs/servicios_tecnicos.jpg" alt="UEB Servicios Técnicos">
+                                        <div class="ueb-overlay">
+                                            <span>UEB Servicios Técnicos</span>
+                                        </div>
+                                    </div>
+                                    <div class="ueb-info">
+                                        <h5>Servicios Técnicos</h5>
+                                        <p>Servicios técnicos especializados en mantenimiento y reparación de instalaciones.</p>
+                                        <div class="ueb-stats">
+                                            <span><i class="fas fa-user-shield"></i> 25 agentes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- REVERSO -->
+                                <div class="flip-card-back">
+                                    <div class="back-content">
+                                        <h5>Servicios Disponibles</h5>
+                                        <ul class="services-list">
+                                            <li><i class="fas fa-check"></i> Instalación de alarmas</li>
+                                            <li><i class="fas fa-check"></i> Reparación CCTV</li>
+                                            <li><i class="fas fa-check"></i> Mantenimiento preventivo</li>
+                                            <li><i class="fas fa-check"></i> Soporte técnico 24/7</li>
+                                        </ul>
+                                        <div class="back-footer">
+                                            <p><strong>Disponibilidad:</strong> Lunes a Domingo</p>
+                                        </div>
+                                    </div>
+                                    <div class="back-logo">
+                                        <img src="imgs/logo3.png" alt="ESPROT Logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sancti Spíritus Ciudad -->
+                        <div class="ueb-card">
+                            <div class="flip-card-inner">
+                                <!-- FRENTE -->
+                                <div class="flip-card-front">
+                                    <div class="ueb-imagen">
+                                        <img src="imgs/ss_ciudad.jpg" alt="UEB Sancti Spíritus Ciudad">
+                                        <div class="ueb-overlay">
+                                            <span>UEB Sancti Spíritus</span>
+                                        </div>
+                                    </div>
+                                    <div class="ueb-info">
+                                        <h5>Sancti Spíritus Ciudad</h5>
+                                        <p>Unidad central con cobertura urbana completa y respuesta en minutos.</p>
+                                        <div class="ueb-stats">
+                                            <span><i class="fas fa-user-shield"></i> 25 agentes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- REVERSO -->
+                                <div class="flip-card-back">
+                                    <div class="back-content">
+                                        <h5>Servicios Disponibles</h5>
+                                        <ul class="services-list">
+                                            <li><i class="fas fa-check"></i> Cobertura urbana total</li>
+                                            <li><i class="fas fa-check"></i> Centro de control 24/7</li>
+                                            <li><i class="fas fa-check"></i> Respuesta rápida</li>
+                                            <li><i class="fas fa-check"></i> Coordinación de emergencias</li>
+                                        </ul>
+                                        <div class="back-footer">
+                                            <p><strong>Tiempo respuesta:</strong> 3 minutos</p>
+                                        </div>
+                                    </div>
+                                    <div class="back-logo">
+                                        <img src="imgs/logo3.png" alt="ESPROT Logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Trinidad -->
+                        <div class="ueb-card">
+                            <div class="flip-card-inner">
+                                <!-- FRENTE -->
+                                <div class="flip-card-front">
+                                    <div class="ueb-imagen">
+                                        <img src="imgs/trinidad.webp" alt="UEB Trinidad">
+                                        <div class="ueb-overlay">
+                                            <span>UEB Trinidad</span>
+                                        </div>
+                                    </div>
+                                    <div class="ueb-info">
+                                        <h5>Trinidad</h5>
+                                        <p>Protección especial para zona turística patrimonial y hoteles de lujo.</p>
+                                        <div class="ueb-stats">
+                                            <span><i class="fas fa-user-shield"></i> 18 agentes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- REVERSO -->
+                                <div class="flip-card-back">
+                                    <div class="back-content">
+                                        <h5>Servicios Disponibles</h5>
+                                        <ul class="services-list">
+                                            <li><i class="fas fa-check"></i> Seguridad turística</li>
+                                            <li><i class="fas fa-check"></i> Protección patrimonial</li>
+                                            <li><i class="fas fa-check"></i> Seguridad hotelera</li>
+                                            <li><i class="fas fa-check"></i> Protección VIP</li>
+                                        </ul>
+                                        <div class="back-footer">
+                                            <p><strong>Especialización:</strong> Turismo de lujo</p>
+                                        </div>
+                                    </div>
+                                    <div class="back-logo">
+                                        <img src="imgs/logo3.png" alt="ESPROT Logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Extensiones Regionales (existente) -->
+                <div class="branches-list">
+                    <h4>Extensiones Regionales Nacionales</h4>
+                    <div class="branches-grid">
+                        <div class="branch-item">
+                            <h5>Cienfuegos</h5>
+                            <p>Cobertura en la región central sur</p>
+                        </div>
+
+                                                <div class="branch-item">
+                            <h5>Sancti Spíritus</h5>
+                            <p>Agencia en la región central</p>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <p class="quote-text">
+                    Donde quiera que esté, ESPROT está cerca para proteger lo que más importa.
+                </p>
+            </div>
+            
+            <!-- Mapa -->
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.123456789!2d-79.432178!3d21.935717!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDU2JzA4LjYiTiA3OcKwMjUnNTUuOCJX!5e0!3m2!1ses!2ses!4v1620000000000!5m2!1ses!2ses" 
+                    allowfullscreen="" 
+                    loading="lazy"
+                    title="Ubicación de ESPROT en Sancti Spíritus">
+                </iframe>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-color primary"></div>
+                        <span>Sede Principal</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="logo-footer magnetic">
+                        <img src="imgs/logo.png" alt="ESPROT - Seguridad de Vanguardia">
+                    </div>
+                    <p>Seguridad de vanguardia para un mundo real. Protegemos lo que más importa con tecnología avanzada y personal altamente capacitado.</p>
+                    <div class="social-icons">
+                        <a href="https://facebook.com" target="_blank" class="social-icon facebook magnetic" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="https://x.com/EsprotSancti" target="_blank" class="social-icon x magnetic" aria-label="X (Twitter)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="magnetic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Inicio</a></li>
+                        <li><a href="#servicios" class="magnetic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> Servicios</a></li>
+                        <li><a href="#ubicacion" class="magnetic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Ubicación</a></li>
+                        <li><a href="#" onclick="openModal()" class="magnetic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Contacto</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="magnetic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +53 555 123 4567</a></li>
+                        <li><a href="mailto:info@esprot.com" class="magnetic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> info@esprot.com</a></li>
+                        <li><a href="#ubicacion" class="magnetic"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Sancti Spíritus, Cuba</a></li>
+                        <li><a href="javascript:void(0)" onclick="openModal()" class="btn btn-primary magnetic" style="padding: 0.6rem 1.5rem; margin-top: 0.5rem; display: inline-block;">Solicitar Servicios</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-legal">
+                    <a href="politica-privacidad.html" class="magnetic">Política de Privacidad</a>
+                    <a href="terminos-servicio.html" class="magnetic">Términos de Servicio</a>
+                    <a href="aviso-legal.html" class="magnetic">Aviso Legal</a>
+                </div>
+                <p class="copyright">&copy; 2026 ESPROT Sancti Spíritus. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <h2>Solicitar Servicios</h2>
+            <form id="contactForm" action="https://formsubmit.co/klypper21@gmail.com" method="POST">
+                <input type="text" name="nombre" placeholder="Nombre completo" required>
+                <input type="email" name="email" placeholder="Correo electrónico" required>
+                <textarea rows="4" name="mensaje" placeholder="¿Cómo podemos ayudarle?" required></textarea>
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" value="https://klypper21.github.io/ESPROT-WEB/">
+                <button type="submit" class="btn btn-primary" style="width: 100%">Enviar Solicitud</button>
+            </form>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+    </div>
+
+    <!-- Scripts optimizados con defer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="https://unpkg.com/lenis@1.3.17/dist/lenis.min.js" defer></script>
+    <script src="scripts.js" defer></script>
+
+</body>
+</html>
