@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Servicio | ESPROT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body.service-detail-page {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top, rgba(220, 38, 38, 0.18), transparent 36%),
+                linear-gradient(180deg, rgba(3, 7, 18, 0.94) 0%, rgba(3, 7, 18, 1) 100%);
+        }
+
+        .detail-shell {
+            padding: 2rem 0 5rem;
+        }
+
+        .detail-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        .back-button,
+        .all-services-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-subtle);
+            padding: 0.9rem 1.25rem;
+            font-weight: 600;
+            transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+
+        .back-button {
+            background: var(--primary);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .back-button:hover,
+        .all-services-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .all-services-link {
+            color: var(--text-light);
+            background: rgba(15, 23, 42, 0.65);
+        }
+
+        .back-button:hover {
+            background: var(--primary-light);
+            border-color: rgba(239, 68, 68, 0.6);
+        }
+
+        .all-services-link:hover {
+            border-color: rgba(239, 68, 68, 0.35);
+            background: rgba(17, 24, 39, 0.92);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .gallery-panel,
+        .info-panel,
+        .narrative-card {
+            background: rgba(12, 18, 34, 0.9);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+        }
+
+        .gallery-panel,
+        .info-panel {
+            padding: 1.5rem;
+        }
+
+        .main-figure {
+            position: relative;
+            width: 100%;
+            border-radius: calc(var(--radius-lg) - 8px);
+            overflow: hidden;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .media-stage {
+            position: relative;
+            width: 100%;
+            min-height: clamp(320px, 58vh, 760px);
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            touch-action: pan-y;
+            transition: transform 0.25s ease;
+            will-change: transform;
+            background:
+                radial-gradient(circle at top, rgba(220, 38, 38, 0.14), transparent 44%),
+                rgba(15, 23, 42, 0.92);
+        }
+
+        .media-stage.is-dragging {
+            transition: none;
+            cursor: grabbing;
+        }
+
+        .gallery-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3;
+            width: 3rem;
+            height: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            background: rgba(2, 6, 23, 0.82);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+            backdrop-filter: blur(12px);
+        }
+
+        .gallery-nav-button:hover {
+            background: rgba(220, 38, 38, 0.9);
+            border-color: rgba(239, 68, 68, 0.65);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        .gallery-nav-button:focus-visible {
+            outline: 3px solid rgba(239, 68, 68, 0.55);
+            outline-offset: 2px;
+        }
+
+        .gallery-nav-button.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .gallery-nav-button.prev {
+            left: 1rem;
+        }
+
+        .gallery-nav-button.next {
+            right: 1rem;
+        }
+
+        .main-media {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: min(70vh, 720px);
+            display: block;
+            object-fit: contain;
+            object-position: center;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .main-media.is-video {
+            background: #020617;
+            width: 100%;
+        }
+
+        .stage-loading {
+            width: 100%;
+            min-height: inherit;
+            padding: 1.5rem;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: var(--text-light);
+            gap: 0.8rem;
+        }
+
+        .stage-loading::before {
+            content: '';
+            width: 52px;
+            height: 52px;
+            border-radius: 999px;
+            border: 3px solid rgba(255, 255, 255, 0.12);
+            border-top-color: var(--primary-light);
+            animation: stageSpin 1s linear infinite;
+        }
+
+        .stage-loading small {
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 24rem;
+        }
+
+        @keyframes stageSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .gallery-caption {
+            margin-top: 0.9rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .thumb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+            gap: 0.8rem;
+            margin-top: 1.1rem;
+        }
+
+        .thumb-button {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(15, 23, 42, 0.92);
+            padding: 0;
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .thumb-button img,
+        .thumb-button video {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+            object-position: center;
+            background: rgba(15, 23, 42, 0.92);
+            display: block;
+        }
+
+        .thumb-button video {
+            pointer-events: none;
+        }
+
+        .thumb-button.is-video::before {
+            content: 'Video';
+            position: absolute;
+            top: 0.55rem;
+            left: 0.55rem;
+            z-index: 2;
+            padding: 0.24rem 0.48rem;
+            border-radius: 999px;
+            background: rgba(2, 6, 23, 0.88);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .thumb-button.is-video::after {
+            content: '▶';
+            position: absolute;
+            right: 0.55rem;
+            bottom: 0.45rem;
+            z-index: 2;
+            width: 2rem;
+            height: 2rem;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            background: rgba(220, 38, 38, 0.88);
+            color: #fff;
+            font-size: 0.78rem;
+            box-shadow: 0 8px 16px rgba(220, 38, 38, 0.28);
+        }
+
+        .thumb-button:hover,
+        .thumb-button[aria-pressed="true"] {
+            transform: translateY(-2px);
+            border-color: rgba(239, 68, 68, 0.55);
+            box-shadow: 0 10px 24px rgba(220, 38, 38, 0.16);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-bottom: 1rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(220, 38, 38, 0.12);
+            color: #fca5a5;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .info-panel h1 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.08;
+            margin-bottom: 1rem;
+        }
+
+        .lead {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.4rem;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-chip {
+            padding: 0.55rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-light);
+            font-size: 0.88rem;
+        }
+
+        .stat-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.9rem;
+        }
+
+        .stat-card {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-card span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .narrative-card {
+            padding: 1.5rem;
+        }
+
+        .narrative-card h2 {
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .paragraph-stack {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .paragraph-stack p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .detail-list {
+            list-style: none;
+            display: grid;
+            gap: 0.85rem;
+        }
+
+        .detail-list li {
+            position: relative;
+            padding-left: 1.2rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .detail-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.72rem;
+            width: 0.42rem;
+            height: 0.42rem;
+            border-radius: 999px;
+            background: var(--primary-light);
+            box-shadow: 0 0 0 6px rgba(220, 38, 38, 0.1);
+        }
+
+        @media (max-width: 980px) {
+            .detail-grid,
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .detail-shell {
+                padding-top: 1.25rem;
+            }
+
+            .gallery-nav-button {
+                width: 2.6rem;
+                height: 2.6rem;
+            }
+
+            .gallery-nav-button.prev {
+                left: 0.7rem;
+            }
+
+            .gallery-nav-button.next {
+                right: 0.7rem;
+            }
+
+            .detail-topbar {
+                align-items: stretch;
+            }
+
+            .back-button,
+            .all-services-link {
+                width: 100%;
+            }
+
+            .stat-strip {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="service-detail-page">
+    <main class="detail-shell">
+        <div class="container">
+            <div class="detail-topbar">
+                <button type="button" class="back-button" onclick="goBack()">Volver</button>
+                <a href="index.html#servicios" class="all-services-link">Ver todos los servicios</a>
+            </div>
+
+            <section class="detail-grid" aria-live="polite">
+                <div class="gallery-panel">
+                    <figure class="main-figure">
+                        <button type="button" id="prevMediaButton" class="gallery-nav-button prev is-hidden" aria-label="Ver imagen anterior">
+                            &#10094;
+                        </button>
+                        <div id="mediaStage" class="media-stage"></div>
+                        <button type="button" id="nextMediaButton" class="gallery-nav-button next is-hidden" aria-label="Ver imagen siguiente">
+                            &#10095;
+                        </button>
+                    </figure>
+                    <p id="galleryCaption" class="gallery-caption"></p>
+                    <div id="thumbGrid" class="thumb-grid"></div>
+                </div>
+
+                <div class="info-panel">
+                    <div class="eyebrow">ESPROT</div>
+                    <h1 id="serviceTitle"></h1>
+                    <p id="serviceSummary" class="lead"></p>
+
+                    <div id="serviceTags" class="meta-row"></div>
+
+                    <div class="stat-strip">
+                        <div class="stat-card">
+                            <span>Modalidad</span>
+                            <strong id="serviceMode"></strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>Cobertura</span>
+                            <strong id="serviceCoverage"></strong>
+                        </div>
+                        <div class="stat-card">
+                            <span>Operacion</span>
+                            <strong id="serviceResponse"></strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-grid">
+                <article class="narrative-card">
+                    <h2>Descripcion detallada</h2>
+                    <div id="serviceDescription" class="paragraph-stack"></div>
+                </article>
+
+                <article class="narrative-card">
+                    <h2>Incluye</h2>
+                    <ul id="serviceIncludes" class="detail-list"></ul>
+                </article>
+
+                <article class="narrative-card">
+                    <h2>Beneficios</h2>
+                    <ul id="serviceBenefits" class="detail-list"></ul>
+                </article>
+
+                <article class="narrative-card">
+                    <h2>Ideal para</h2>
+                    <ul id="serviceIdealFor" class="detail-list"></ul>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        function generatedVideo(frames, poster, alt, caption) {
+            return {
+                type: 'video',
+                source: 'generated',
+                frames,
+                poster,
+                alt,
+                caption
+            };
+        }
+
+        const SERVICE_DETAILS = {
+            'custodio': {
+                title: 'Servicio de Custodio',
+                summary: 'Proteccion presencial y tecnologica para locales, centros de trabajo y activos sensibles.',
+                mode: 'Presencial + monitoreo',
+                coverage: 'Locales, oficinas y almacenes',
+                response: 'Cobertura 24/7',
+                tags: ['Custodia', 'Control de accesos', 'Alarmas', 'Videovigilancia'],
+                description: [
+                    'Nuestro servicio de custodio combina presencia fisica, control operativo y medios tecnicos para elevar la seguridad diaria de instalaciones con distintos niveles de riesgo.',
+                    'Se definen rutinas de control de acceso, rondas preventivas, chequeo de puntos vulnerables y protocolos de apertura, cierre y respuesta ante incidencias.',
+                    'El resultado es una proteccion constante orientada a disuadir, detectar y actuar con rapidez para proteger personas, bienes y continuidad operativa.'
+                ],
+                includes: [
+                    'Custodios asignados segun el nivel de cobertura requerido.',
+                    'Control de entradas, salidas y circulacion dentro del area protegida.',
+                    'Rondas preventivas y verificacion de puntos criticos.',
+                    'Coordinacion con sistemas de alarma y medios de vigilancia complementarios.'
+                ],
+                benefits: [
+                    'Presencia visible con efecto disuasivo inmediato.',
+                    'Mayor control del flujo de personas, vehiculos y mercancias.',
+                    'Menor tiempo de reaccion ante eventos o alertas.',
+                    'Registros de incidencias y seguimiento operativo.'
+                ],
+                idealFor: [
+                    'Empresas con flujo constante de personal y visitantes.',
+                    'Almacenes, oficinas administrativas y centros de servicios.',
+                    'Entidades que requieren aperturas y cierres seguros.',
+                    'Instalaciones con activos de alto valor o informacion sensible.'
+                ],
+                gallery: [
+                    { type: 'image', src: 'imgs/servicios/custodio/imagenes/custodio.webp', alt: 'Custodio en servicio', caption: 'Cobertura presencial para la proteccion diaria del inmueble.' },
+                    generatedVideo(
+                        ['imgs/servicios/custodio/imagenes/custodio.webp', 'imgs/servicios/custodio/imagenes/custodio1.jpg', 'imgs/servicios/custodio/imagenes/cust.jpg'],
+                        'imgs/servicios/custodio/imagenes/custodio.webp',
+                        'Video del servicio de custodio',
+                        'Video breve del servicio de custodio generado a partir del material visual disponible.'
+                    ),
+                    { type: 'image', src: 'imgs/servicios/custodio/imagenes/custodio1.jpg', alt: 'Equipo de custodios', caption: 'Personal preparado para control, prevencion y respuesta inicial.' },
+                    { type: 'image', src: 'imgs/servicios/custodio/imagenes/cust.jpg', alt: 'Unidad operativa de seguridad', caption: 'Apoyo operativo para entornos comerciales e industriales.' }
+                ]
+            },
+            'vigilancia-247': {
+                title: 'Vigilancia 24/7',
+                summary: 'Monitoreo continuo y patrullaje preventivo para instalaciones que no pueden detener su proteccion.',
+                mode: 'Monitoreo continuo',
+                coverage: 'Instalaciones criticas y perimetros',
+                response: 'Operacion permanente',
+                tags: ['CCTV', 'Patrullaje', 'Monitoreo', 'Alertas'],
+                description: [
+                    'La vigilancia 24/7 integra observacion constante, chequeos programados y respuesta organizada para reducir vulnerabilidades durante todo el dia.',
+                    'El servicio se adapta a la dinamica del cliente con vigilancia remota, patrullaje preventivo y seguimiento de eventos en horarios de mayor sensibilidad.',
+                    'Esta modalidad aporta continuidad, trazabilidad y capacidad de deteccion temprana en operaciones que requieren disponibilidad sostenida.'
+                ],
+                includes: [
+                    'Monitoreo permanente de puntos definidos por el cliente.',
+                    'Patrullaje preventivo segun rutas y frecuencias establecidas.',
+                    'Registro de alertas, incidencias y novedades operativas.',
+                    'Escalamiento de eventos conforme a protocolos de respuesta.'
+                ],
+                benefits: [
+                    'Cobertura constante de dia, noche y fines de semana.',
+                    'Deteccion temprana de comportamientos o situaciones de riesgo.',
+                    'Mayor evidencia visual y control de incidencias.',
+                    'Reduccion de vulnerabilidad en horarios de baja presencia.'
+                ],
+                idealFor: [
+                    'Centros de trabajo con operaciones continuas.',
+                    'Comercios, oficinas y naves con perimetros amplios.',
+                    'Instalaciones con equipos, inventario o informacion critica.',
+                    'Clientes que necesitan supervision sin interrupciones.'
+                ],
+                gallery: [
+                    { type: 'image', src: 'imgs/servicios/vigilancia-247/imagenes/cctv.jpg', alt: 'Monitoreo CCTV', caption: 'Supervision continua apoyada por medios de videovigilancia.' },
+                    generatedVideo(
+                        ['imgs/servicios/vigilancia-247/imagenes/cctv.jpg'],
+                        'imgs/servicios/vigilancia-247/imagenes/cctv.jpg',
+                        'Video de vigilancia 24/7',
+                        'Video breve de vigilancia 24/7 generado con escenas del servicio.'
+                    )
+                ]
+            },
+            'extintores': {
+                title: 'Llenado de Extintores',
+                summary: 'Recarga, revision y certificacion funcional de extintores segun la necesidad operativa del cliente.',
+                mode: 'Servicio tecnico especializado',
+                coverage: 'Extintores y puntos contra incendio',
+                response: 'Atencion programada',
+                tags: ['Recarga', 'Revision', 'Certificacion', 'Prevencion'],
+                description: [
+                    'Atendemos la recarga y verificacion de extintores para que los equipos mantengan condiciones funcionales y disponibilidad ante una emergencia.',
+                    'El proceso incluye revision del estado general, comprobacion del equipo, sustitucion o ajuste cuando corresponde y etiquetado de control.',
+                    'Este servicio ayuda a reforzar la prevencion contra incendios y a sostener una gestion responsable de los medios de proteccion.'
+                ],
+                includes: [
+                    'Inspeccion inicial del estado fisico del extintor.',
+                    'Recarga segun tipo de agente y necesidad del equipo.',
+                    'Revisiones funcionales y control visual del conjunto.',
+                    'Etiquetado y entrega con informacion de seguimiento.'
+                ],
+                benefits: [
+                    'Equipos listos para actuar cuando se necesiten.',
+                    'Mejor control del estado de los medios contra incendio.',
+                    'Apoyo al cumplimiento de planes internos de seguridad.',
+                    'Mayor confianza operativa en la respuesta preventiva.'
+                ],
+                idealFor: [
+                    'Oficinas, almacenes y areas industriales.',
+                    'Comercios y locales de atencion al publico.',
+                    'Entidades con planes de seguridad y prevencion.',
+                    'Instalaciones que requieren revisar periodicamente sus equipos.'
+                ],
+                gallery: [
+                    { type: 'image', src: 'imgs/servicios/extintores/imagenes/extintor_3.webp', alt: 'Extintores en mantenimiento', caption: 'Revision y acondicionamiento de medios contra incendio.' },
+                    generatedVideo(
+                        ['imgs/servicios/extintores/imagenes/extintor_3.webp', 'imgs/servicios/extintores/imagenes/extintor_2.jpg', 'imgs/servicios/extintores/imagenes/extintor_4.webp'],
+                        'imgs/servicios/extintores/imagenes/extintor_3.webp',
+                        'Video del servicio de extintores',
+                        'Video breve del servicio de extintores generado con el material visual actual.'
+                    ),
+                    { type: 'image', src: 'imgs/servicios/extintores/imagenes/extintor_2.jpg', alt: 'Proceso de llenado de extintores', caption: 'Atencion tecnica orientada a mantener la funcionalidad del equipo.' },
+                    { type: 'image', src: 'imgs/servicios/extintores/imagenes/extintor_4.webp', alt: 'Extintores preparados', caption: 'Equipos listos para su entrega y uso operativo.' },
+                    { type: 'image', src: 'imgs/servicios/extintores/imagenes/extintor.jpg', alt: 'Extintor certificado', caption: 'Control visual y organizacion del equipamiento de respuesta.' }
+                ]
+            },
+            'impresion': {
+                title: 'Servicios de impresion',
+                summary: 'Produccion de materiales impresos y personalizados para identificacion, promocion y apoyo operativo.',
+                mode: 'Produccion bajo demanda',
+                coverage: 'Papeleria, piezas visuales y soportes',
+                response: 'Segun volumen y formato',
+                tags: ['Impresion', 'Personalizacion', 'Rotulacion', 'Entrega'],
+                description: [
+                    'Ofrecemos soluciones de impresion para proyectos puntuales o necesidades recurrentes, adaptando formatos, tiradas y acabados al objetivo del cliente.',
+                    'La produccion puede orientarse a materiales promocionales, piezas de identificacion, soportes visuales y articulos personalizados para uso comercial o institucional.',
+                    'Trabajamos con un enfoque practico: claridad en el pedido, tiempos definidos y resultados alineados con la imagen o funcion esperada.'
+                ],
+                includes: [
+                    'Impresion de materiales en distintos formatos y soportes.',
+                    'Personalizacion de piezas para eventos, promociones o uso interno.',
+                    'Preparacion de pedidos por volumen pequeno o medio.',
+                    'Coordinacion de entrega segun la complejidad del encargo.'
+                ],
+                benefits: [
+                    'Respuesta agil para pedidos especificos.',
+                    'Mayor uniformidad visual en materiales de la entidad.',
+                    'Posibilidad de personalizar piezas segun la necesidad real.',
+                    'Apoyo directo a acciones comerciales, informativas o institucionales.'
+                ],
+                idealFor: [
+                    'Negocios que necesitan materiales promocionales o visuales.',
+                    'Instituciones con requerimientos de identificacion o apoyo grafico.',
+                    'Ferias, eventos y actividades de comunicacion interna.',
+                    'Clientes que buscan produccion por demanda sin procesos complejos.'
+                ],
+                gallery: [
+                    { type: 'image', src: 'imgs/servicios/impresion/imagenes/manualidades.webp', alt: 'Productos impresos y personalizados', caption: 'Piezas visuales y materiales hechos a la medida del pedido.' },
+                    generatedVideo(
+                        ['imgs/servicios/impresion/imagenes/manualidades.webp', 'imgs/servicios/impresion/imagenes/IMG-20250507-WA0405.jpg', 'imgs/servicios/impresion/imagenes/20250327_092311.webp'],
+                        'imgs/servicios/impresion/imagenes/manualidades.webp',
+                        'Video de servicios de impresion',
+                        'Video breve de servicios de impresion generado con muestras del trabajo realizado.'
+                    ),
+                    { type: 'image', src: 'imgs/servicios/impresion/imagenes/IMG-20250507-WA0405.jpg', alt: 'Trabajo de impresion terminado', caption: 'Acabados listos para entrega o uso promocional.' },
+                    { type: 'image', src: 'imgs/servicios/impresion/imagenes/20250327_092311.webp', alt: 'Muestra de impresion', caption: 'Produccion bajo demanda para necesidades concretas.' }
+                ]
+            },
+            'alarmas-identificacion': {
+                title: 'Sistemas de alarmas e Identificacion',
+                summary: 'Instalacion, puesta en marcha y mantenimiento de sistemas para reforzar control, prevencion y acceso seguro.',
+                mode: 'Instalacion y mantenimiento',
+                coverage: 'Accesos, interiores y puntos sensibles',
+                response: 'Preventivo + correctivo',
+                tags: ['Alarmas', 'Sensores', 'Identificacion', 'Soporte tecnico'],
+                description: [
+                    'Este servicio refuerza la seguridad del inmueble mediante soluciones orientadas a detectar eventos no autorizados y organizar mejor el control de acceso.',
+                    'Realizamos levantamiento tecnico, instalacion de equipos, ajustes basicos y mantenimiento para sostener el funcionamiento del sistema en el tiempo.',
+                    'La implementacion puede adaptarse tanto a inmuebles pequenos como a areas de mayor complejidad con zonas restringidas o puntos criticos.'
+                ],
+                includes: [
+                    'Evaluacion inicial del espacio y definicion de puntos de control.',
+                    'Instalacion de equipos y configuracion basica del sistema.',
+                    'Mantenimiento preventivo y atencion correctiva.',
+                    'Acompanamiento tecnico para el uso operativo de la solucion.'
+                ],
+                benefits: [
+                    'Mayor capacidad de deteccion temprana ante incidencias.',
+                    'Mejor control de accesos y movimientos en areas sensibles.',
+                    'Apoyo a la prevencion con medios tecnicos permanentes.',
+                    'Continuidad operativa gracias al mantenimiento programado.'
+                ],
+                idealFor: [
+                    'Oficinas con acceso restringido.',
+                    'Almacenes, talleres e instalaciones tecnicas.',
+                    'Entidades que desean reforzar control y trazabilidad.',
+                    'Inmuebles que necesitan soporte tecnico especializado.'
+                ],
+                gallery: [
+                    { type: 'image', src: 'imgs/servicios/alarmas-identificacion/imagenes/alarma.webp', alt: 'Sistema de alarma instalado', caption: 'Soluciones para deteccion, aviso y control preventivo.' },
+                    { type: 'image', src: 'imgs/servicios/alarmas-identificacion/imagenes/DSC00264.JPG', alt: 'Instalacion de sistemas de alarma', caption: 'Vista del montaje y configuracion del sistema de seguridad en sitio.' },
+                    { type: 'video', src: 'imgs/servicios/alarmas-identificacion/videos/MAH00285.MP4', poster: 'imgs/servicios/alarmas-identificacion/imagenes/DSC00264.JPG', alt: 'Video de instalacion de sistemas de alarma', caption: 'Recorrido en video del proceso de instalacion y ajuste del sistema.' },
+                    { type: 'image', src: 'imgs/servicios/alarmas-identificacion/imagenes/DSC00267.JPG', alt: 'Componentes del sistema de identificacion', caption: 'Detalle de los componentes y puntos de control del sistema.' },
+                    { type: 'video', src: 'imgs/servicios/alarmas-identificacion/videos/MAH00316.MP4', poster: 'imgs/servicios/alarmas-identificacion/imagenes/DSC00267.JPG', alt: 'Video del sistema de identificacion y alarmas', caption: 'Video del sistema ya instalado y en funcionamiento.' },
+                    { type: 'image', src: 'imgs/servicios/alarmas-identificacion/imagenes/alarma1.webp', alt: 'Panel y sensores de alarma', caption: 'Integracion de componentes para mayor seguridad del inmueble.' }
+                ]
+            },
+            'valores': {
+                title: 'Traslado de Valores',
+                summary: 'Custodia y transporte seguro de efectivo, documentos y objetos de valor con medios y personal preparados.',
+                mode: 'Custodia movil',
+                coverage: 'Rutas urbanas e intermunicipales',
+                response: 'Operacion coordinada',
+                tags: ['Traslado', 'Custodia', 'Rutas', 'Seguridad'],
+                description: [
+                    'El traslado de valores se organiza con enfoque preventivo, discrecion operativa y control de cada fase del recorrido para reducir exposicion y vulnerabilidades.',
+                    'Se coordinan rutas, responsables, tiempos y procedimientos de entrega o recepcion en funcion del tipo de valor transportado y del contexto operativo.',
+                    'El servicio esta pensado para movimientos que requieren seguridad, trazabilidad y una ejecucion confiable de principio a fin.'
+                ],
+                includes: [
+                    'Planificacion operativa del recorrido y de los puntos de control.',
+                    'Custodios asignados y coordinacion de la salida y la entrega.',
+                    'Seguimiento del movimiento conforme a protocolos definidos.',
+                    'Registro basico de recepcion, entrega e incidencias.'
+                ],
+                benefits: [
+                    'Reduccion de exposicion durante el traslado.',
+                    'Mayor control del proceso de entrega y recepcion.',
+                    'Procedimientos consistentes para operaciones sensibles.',
+                    'Confianza operativa en movimientos de alto valor.'
+                ],
+                idealFor: [
+                    'Empresas con movimiento de efectivo o documentos sensibles.',
+                    'Entidades que trasladan piezas o activos de valor.',
+                    'Operaciones entre sedes, almacenes o puntos de entrega.',
+                    'Clientes que necesitan una custodia movil organizada.'
+                ],
+                gallery: [
+                    { type: 'image', src: 'imgs/servicios/valores/imagenes/valores.webp', alt: 'Traslado protegido de valores', caption: 'Custodia movil para operaciones sensibles y programadas.' },
+                    generatedVideo(
+                        ['imgs/servicios/valores/imagenes/valores.webp', 'imgs/servicios/valores/imagenes/DSC00302.webp'],
+                        'imgs/servicios/valores/imagenes/valores.webp',
+                        'Video de traslado de valores',
+                        'Video breve del servicio de traslado de valores generado con las imagenes del proyecto.'
+                    ),
+                    { type: 'image', src: 'imgs/servicios/valores/imagenes/DSC00302.webp', alt: 'Operacion de seguridad en traslado', caption: 'Coordinacion operativa para movimientos de valor.' }
+                ]
+            }
+        };
+
+        const mediaStage = document.getElementById('mediaStage');
+        const prevMediaButton = document.getElementById('prevMediaButton');
+        const nextMediaButton = document.getElementById('nextMediaButton');
+        const galleryCaption = document.getElementById('galleryCaption');
+        const thumbGrid = document.getElementById('thumbGrid');
+        const serviceTitle = document.getElementById('serviceTitle');
+        const serviceSummary = document.getElementById('serviceSummary');
+        const serviceTags = document.getElementById('serviceTags');
+        const serviceMode = document.getElementById('serviceMode');
+        const serviceCoverage = document.getElementById('serviceCoverage');
+        const serviceResponse = document.getElementById('serviceResponse');
+        const serviceDescription = document.getElementById('serviceDescription');
+        const serviceIncludes = document.getElementById('serviceIncludes');
+        const serviceBenefits = document.getElementById('serviceBenefits');
+        const serviceIdealFor = document.getElementById('serviceIdealFor');
+
+        const generatedMediaCache = new Map();
+        const supportedVideoMimeType = typeof MediaRecorder !== 'undefined'
+            ? ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'].find((mimeType) => MediaRecorder.isTypeSupported(mimeType)) || ''
+            : '';
+        const swipeState = {
+            startX: 0,
+            startY: 0,
+            pointerId: null,
+            isDragging: false
+        };
+
+        let activeService = null;
+        let activeMediaToken = 0;
+        let activeMediaIndex = 0;
+
+        function renderParagraphs(target, paragraphs) {
+            target.innerHTML = '';
+
+            paragraphs.forEach((paragraph) => {
+                const node = document.createElement('p');
+                node.textContent = paragraph;
+                target.appendChild(node);
+            });
+        }
+
+        function renderList(target, items) {
+            target.innerHTML = '';
+
+            items.forEach((item) => {
+                const node = document.createElement('li');
+                node.textContent = item;
+                target.appendChild(node);
+            });
+        }
+
+        function easeInOutQuad(value) {
+            return value < 0.5
+                ? 2 * value * value
+                : 1 - Math.pow(-2 * value + 2, 2) / 2;
+        }
+
+        function getGalleryItemType(item) {
+            return item.type || 'image';
+        }
+
+        function getThumbSource(item) {
+            if (item.thumb) {
+                return item.thumb;
+            }
+
+            if (item.poster) {
+                return item.poster;
+            }
+
+            if (item.frames && item.frames.length) {
+                return item.frames[0];
+            }
+
+            return item.src;
+        }
+
+        function setPressedThumb(index) {
+            thumbGrid.querySelectorAll('.thumb-button').forEach((button, buttonIndex) => {
+                button.setAttribute('aria-pressed', buttonIndex === index ? 'true' : 'false');
+            });
+        }
+
+        function resetSwipeFeedback() {
+            mediaStage.style.transform = '';
+            mediaStage.classList.remove('is-dragging');
+        }
+
+        function updateGalleryControls() {
+            if (!activeService || !activeService.gallery) {
+                prevMediaButton.classList.add('is-hidden');
+                nextMediaButton.classList.add('is-hidden');
+                return;
+            }
+
+            const shouldShowControls = activeService.gallery.length > 1;
+
+            prevMediaButton.classList.toggle('is-hidden', !shouldShowControls);
+            nextMediaButton.classList.toggle('is-hidden', !shouldShowControls);
+        }
+
+        function navigateMedia(step) {
+            if (!activeService || !activeService.gallery || activeService.gallery.length < 2) {
+                return;
+            }
+
+            const totalItems = activeService.gallery.length;
+            const nextIndex = (activeMediaIndex + step + totalItems) % totalItems;
+
+            if (nextIndex === activeMediaIndex) {
+                return;
+            }
+
+            setActiveMedia(nextIndex);
+        }
+
+        function renderImageInStage(src, alt) {
+            mediaStage.innerHTML = '';
+
+            const image = document.createElement('img');
+            image.className = 'main-media';
+            image.src = src;
+            image.alt = alt;
+            image.loading = 'eager';
+
+            mediaStage.appendChild(image);
+        }
+
+        function renderVideoInStage(src, poster, alt) {
+            mediaStage.innerHTML = '';
+
+            const video = document.createElement('video');
+            video.className = 'main-media is-video';
+            video.src = src;
+            video.poster = poster || '';
+            video.controls = true;
+            video.autoplay = true;
+            video.muted = true;
+            video.loop = true;
+            video.playsInline = true;
+            video.preload = 'auto';
+            video.setAttribute('aria-label', alt);
+
+            mediaStage.appendChild(video);
+            video.play().catch(() => {});
+        }
+
+        function showStageLoading(caption) {
+            mediaStage.innerHTML = '';
+
+            const loader = document.createElement('div');
+            loader.className = 'stage-loading';
+
+            const title = document.createElement('strong');
+            title.textContent = 'Preparando video';
+
+            const note = document.createElement('small');
+            note.textContent = 'Generando un clip breve a partir del material visual del servicio. Esto puede tardar unos segundos la primera vez.';
+
+            loader.appendChild(title);
+            loader.appendChild(note);
+            mediaStage.appendChild(loader);
+            galleryCaption.textContent = caption;
+        }
+
+        function drawCoverFrame(ctx, image, width, height, zoom, focusX, focusY) {
+            const scale = Math.max(width / image.width, height / image.height) * zoom;
+            const drawWidth = image.width * scale;
+            const drawHeight = image.height * scale;
+            const x = (width - drawWidth) * focusX;
+            const y = (height - drawHeight) * focusY;
+
+            ctx.drawImage(image, x, y, drawWidth, drawHeight);
+        }
+
+        function renderGeneratedVideoFrame(ctx, frames, progress, width, height) {
+            ctx.clearRect(0, 0, width, height);
+
+            const span = Math.max(frames.length - 1, 1);
+            const scaledProgress = progress * span;
+            const baseIndex = Math.min(frames.length - 1, Math.floor(scaledProgress));
+            const nextIndex = Math.min(frames.length - 1, baseIndex + 1);
+            const localProgress = baseIndex === nextIndex ? progress : scaledProgress - baseIndex;
+            const eased = easeInOutQuad(Math.min(Math.max(localProgress, 0), 1));
+
+            const baseFocusX = baseIndex % 2 === 0 ? 0.46 : 0.54;
+            const nextFocusX = nextIndex % 2 === 0 ? 0.54 : 0.46;
+
+            drawCoverFrame(ctx, frames[baseIndex], width, height, 1.06 + eased * 0.06, baseFocusX, 0.5);
+
+            if (nextIndex !== baseIndex) {
+                ctx.save();
+                ctx.globalAlpha = eased;
+                drawCoverFrame(ctx, frames[nextIndex], width, height, 1.08 + (1 - eased) * 0.04, nextFocusX, 0.5);
+                ctx.restore();
+            }
+
+            const overlay = ctx.createLinearGradient(0, 0, 0, height);
+            overlay.addColorStop(0, 'rgba(2, 6, 23, 0.05)');
+            overlay.addColorStop(1, 'rgba(2, 6, 23, 0.18)');
+            ctx.fillStyle = overlay;
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        function loadImageAsset(src) {
+            return new Promise((resolve, reject) => {
+                const image = new Image();
+                image.onload = () => resolve(image);
+                image.onerror = () => reject(new Error(`No se pudo cargar ${src}`));
+                image.src = src;
+            });
+        }
+
+        async function generateVideoClip(item) {
+            if (!supportedVideoMimeType || typeof HTMLCanvasElement === 'undefined' || !HTMLCanvasElement.prototype.captureStream) {
+                return null;
+            }
+
+            const cacheKey = JSON.stringify({
+                frames: item.frames,
+                poster: item.poster,
+                caption: item.caption
+            });
+
+            if (generatedMediaCache.has(cacheKey)) {
+                return generatedMediaCache.get(cacheKey);
+            }
+
+            const promise = (async () => {
+                const frames = await Promise.all(item.frames.map((frameSrc) => loadImageAsset(frameSrc)));
+                const canvas = document.createElement('canvas');
+                const width = 960;
+                const height = 720;
+                const fps = 12;
+                const durationMs = Math.max(3200, frames.length * 1400);
+                const ctx = canvas.getContext('2d');
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const stream = canvas.captureStream(fps);
+                const recorder = new MediaRecorder(stream, {
+                    mimeType: supportedVideoMimeType,
+                    videoBitsPerSecond: 1400000
+                });
+
+                const chunks = [];
+                recorder.ondataavailable = (event) => {
+                    if (event.data && event.data.size > 0) {
+                        chunks.push(event.data);
+                    }
+                };
+
+                const stopResult = new Promise((resolve, reject) => {
+                    recorder.onerror = (event) => {
+                        reject(event.error || new Error('No se pudo generar el video.'));
+                    };
+
+                    recorder.onstop = () => {
+                        stream.getTracks().forEach((track) => track.stop());
+
+                        if (!chunks.length) {
+                            reject(new Error('No se pudo generar el video.'));
+                            return;
+                        }
+
+                        const blob = new Blob(chunks, { type: supportedVideoMimeType });
+                        resolve(URL.createObjectURL(blob));
+                    };
+                });
+
+                recorder.start(250);
+
+                await new Promise((resolve) => {
+                    const start = performance.now();
+
+                    function draw(now) {
+                        const progress = Math.min(1, (now - start) / durationMs);
+                        renderGeneratedVideoFrame(ctx, frames, progress, width, height);
+
+                        if (progress < 1) {
+                            requestAnimationFrame(draw);
+                            return;
+                        }
+
+                        setTimeout(resolve, 250);
+                    }
+
+                    requestAnimationFrame(draw);
+                });
+
+                recorder.stop();
+                return stopResult;
+            })().catch((error) => {
+                generatedMediaCache.delete(cacheKey);
+                console.error('Error generando video para la galeria:', error);
+                return null;
+            });
+
+            generatedMediaCache.set(cacheKey, promise);
+            return promise;
+        }
+
+        async function setActiveMedia(mediaIndex) {
+            if (!activeService || !activeService.gallery[mediaIndex]) {
+                return;
+            }
+
+            const item = activeService.gallery[mediaIndex];
+            const mediaType = getGalleryItemType(item);
+            const renderToken = ++activeMediaToken;
+
+            activeMediaIndex = mediaIndex;
+            resetSwipeFeedback();
+            setPressedThumb(mediaIndex);
+            galleryCaption.textContent = item.caption;
+
+            if (mediaType === 'video') {
+                if (item.source !== 'generated') {
+                    renderVideoInStage(item.src, item.poster || '', item.alt);
+                    return;
+                }
+
+                showStageLoading(item.caption);
+
+                const videoSource = await generateVideoClip(item);
+
+                if (renderToken !== activeMediaToken) {
+                    return;
+                }
+
+                if (!videoSource) {
+                    renderImageInStage(getThumbSource(item), item.alt);
+                    galleryCaption.textContent = `${item.caption} Este navegador no pudo preparar el video, asi que se muestra una vista previa.`;
+                    return;
+                }
+
+                renderVideoInStage(videoSource, item.poster || getThumbSource(item), item.alt);
+                return;
+            }
+
+            renderImageInStage(item.src, item.alt);
+        }
+
+        function renderGallery(gallery) {
+            thumbGrid.innerHTML = '';
+            activeMediaIndex = 0;
+            updateGalleryControls();
+
+            gallery.forEach((item, index) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'thumb-button';
+
+                if (getGalleryItemType(item) === 'video') {
+                    button.classList.add('is-video');
+                }
+
+                button.setAttribute('aria-pressed', 'false');
+                button.setAttribute(
+                    'aria-label',
+                    `Ver ${getGalleryItemType(item) === 'video' ? 'video' : 'imagen'} ${index + 1} de la galeria`
+                );
+
+                let preview;
+
+                if (getGalleryItemType(item) === 'video' && item.source !== 'generated') {
+                    preview = document.createElement('video');
+                    preview.src = item.src;
+                    preview.muted = true;
+                    preview.loop = true;
+                    preview.autoplay = true;
+                    preview.playsInline = true;
+                    preview.preload = 'metadata';
+                    preview.setAttribute('aria-hidden', 'true');
+                    preview.disablePictureInPicture = true;
+                    preview.addEventListener('loadeddata', () => {
+                        preview.play().catch(() => {});
+                    });
+                } else {
+                    preview = document.createElement('img');
+                    preview.src = getThumbSource(item);
+                    preview.alt = item.alt;
+                    preview.loading = 'lazy';
+                }
+
+                button.appendChild(preview);
+                button.addEventListener('click', () => setActiveMedia(index));
+                thumbGrid.appendChild(button);
+            });
+
+            setActiveMedia(0);
+        }
+
+        function handleSwipeStart(event) {
+            if (!activeService || activeService.gallery.length < 2) {
+                return;
+            }
+
+            if (event.pointerType === 'mouse' && event.button !== 0) {
+                return;
+            }
+
+            if (event.target.closest('video')) {
+                return;
+            }
+
+            swipeState.startX = event.clientX;
+            swipeState.startY = event.clientY;
+            swipeState.pointerId = event.pointerId;
+            swipeState.isDragging = true;
+            mediaStage.classList.add('is-dragging');
+
+            if (typeof mediaStage.setPointerCapture === 'function') {
+                try {
+                    mediaStage.setPointerCapture(event.pointerId);
+                } catch (error) {
+                    console.debug('No se pudo capturar el puntero para el carrusel.', error);
+                }
+            }
+        }
+
+        function handleSwipeMove(event) {
+            if (!swipeState.isDragging || event.pointerId !== swipeState.pointerId) {
+                return;
+            }
+
+            const deltaX = event.clientX - swipeState.startX;
+            const deltaY = event.clientY - swipeState.startY;
+
+            if (Math.abs(deltaX) <= Math.abs(deltaY)) {
+                return;
+            }
+
+            mediaStage.style.transform = `translateX(${Math.max(-90, Math.min(90, deltaX * 0.22))}px)`;
+        }
+
+        function finishSwipe(event) {
+            if (!swipeState.isDragging || event.pointerId !== swipeState.pointerId) {
+                return;
+            }
+
+            const deltaX = event.clientX - swipeState.startX;
+            const deltaY = event.clientY - swipeState.startY;
+
+            swipeState.isDragging = false;
+            swipeState.pointerId = null;
+
+            if (typeof mediaStage.releasePointerCapture === 'function') {
+                try {
+                    mediaStage.releasePointerCapture(event.pointerId);
+                } catch (error) {
+                    console.debug('No se pudo liberar el puntero del carrusel.', error);
+                }
+            }
+
+            resetSwipeFeedback();
+
+            if (Math.abs(deltaX) < 60 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+                return;
+            }
+
+            navigateMedia(deltaX < 0 ? 1 : -1);
+        }
+
+        function cancelSwipe() {
+            swipeState.isDragging = false;
+            swipeState.pointerId = null;
+            resetSwipeFeedback();
+        }
+
+        function setupMediaCarousel() {
+            if (mediaStage.dataset.carouselReady === 'true') {
+                return;
+            }
+
+            mediaStage.dataset.carouselReady = 'true';
+            prevMediaButton.addEventListener('click', () => navigateMedia(-1));
+            nextMediaButton.addEventListener('click', () => navigateMedia(1));
+            mediaStage.addEventListener('pointerdown', handleSwipeStart);
+            mediaStage.addEventListener('pointermove', handleSwipeMove);
+            mediaStage.addEventListener('pointerup', finishSwipe);
+            mediaStage.addEventListener('pointercancel', cancelSwipe);
+            mediaStage.addEventListener('pointerleave', (event) => {
+                if (event.pointerType === 'mouse') {
+                    cancelSwipe();
+                }
+            });
+        }
+
+        function renderTags(tags) {
+            serviceTags.innerHTML = '';
+
+            tags.forEach((tag) => {
+                const chip = document.createElement('span');
+                chip.className = 'meta-chip';
+                chip.textContent = tag;
+                serviceTags.appendChild(chip);
+            });
+        }
+
+        function renderService(serviceKey) {
+            const selectedService = SERVICE_DETAILS[serviceKey] || SERVICE_DETAILS['custodio'];
+
+            activeService = {
+                ...selectedService,
+                gallery: selectedService.gallery.map((item) => ({
+                    type: 'image',
+                    ...item
+                }))
+            };
+
+            document.title = `${activeService.title} | ESPROT`;
+            serviceTitle.textContent = activeService.title;
+            serviceSummary.textContent = activeService.summary;
+            serviceMode.textContent = activeService.mode;
+            serviceCoverage.textContent = activeService.coverage;
+            serviceResponse.textContent = activeService.response;
+
+            renderTags(activeService.tags);
+            renderParagraphs(serviceDescription, activeService.description);
+            renderList(serviceIncludes, activeService.includes);
+            renderList(serviceBenefits, activeService.benefits);
+            renderList(serviceIdealFor, activeService.idealFor);
+            renderGallery(activeService.gallery);
+        }
+
+        function goBack() {
+            if (window.history.length > 1 && document.referrer) {
+                window.history.back();
+                return;
+            }
+
+            if (window.opener && !window.opener.closed) {
+                window.close();
+                return;
+            }
+
+            window.location.href = 'index.html#servicios';
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        setupMediaCarousel();
+        renderService(params.get('servicio') || 'custodio');
+
+        window.goBack = goBack;
+    </script>
+</body>
+</html>

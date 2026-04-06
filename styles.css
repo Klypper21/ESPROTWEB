@@ -515,6 +515,16 @@
             transform: translateY(60px);
         }
 
+        .service-card[data-service] {
+            cursor: pointer;
+        }
+
+        .service-card[data-service]:focus-visible {
+            outline: 3px solid rgba(239, 68, 68, 0.7);
+            outline-offset: 4px;
+            box-shadow: 0 0 0 6px rgba(220, 38, 38, 0.14);
+        }
+
         .service-card:hover {
             transform: translateY(-8px);
             border-color: rgba(220, 38, 38, 0.3);
@@ -578,6 +588,14 @@
         .carousel-btn:hover {
             background: var(--primary);
             border-color: var(--primary);
+        }
+
+        @media (hover: none) {
+            .carousel-btn {
+                display: block;
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
         }
 
         .prev { left: 10px; }

@@ -372,6 +372,54 @@
             
             updateCarouselButtons(carouselIndex);
         }
+
+        function openServiceDetail(serviceKey) {
+            if (!serviceKey) {
+                return;
+            }
+
+            const detailUrl = `servicio-detalle.html?servicio=${encodeURIComponent(serviceKey)}`;
+            window.open(detailUrl, '_blank');
+        }
+
+        function setupServiceCards() {
+            const serviceCards = document.querySelectorAll('.service-card[data-service]');
+
+            serviceCards.forEach((card) => {
+                if (card.dataset.detailReady === 'true') {
+                    return;
+                }
+
+                card.dataset.detailReady = 'true';
+
+                card.querySelectorAll('.carousel-btn').forEach((button) => {
+                    button.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                    });
+                });
+
+                card.addEventListener('click', (event) => {
+                    if (event.target.closest('button, a, input, textarea, select')) {
+                        return;
+                    }
+
+                    openServiceDetail(card.dataset.service);
+                });
+
+                card.addEventListener('keydown', (event) => {
+                    if (event.target.closest('button, a, input, textarea, select')) {
+                        return;
+                    }
+
+                    if (event.key !== 'Enter' && event.key !== ' ') {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    openServiceDetail(card.dataset.service);
+                });
+            });
+        }
         
         // Animaciones para Sede Principal y UEB
 gsap.to('.sede-container', {
@@ -469,11 +517,15 @@ gsap.to('.map-legend', {
             });
         });
 
-        // Initialize carousels on page load
+        // Initialize carousels and service detail navigation on page load
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initCarousels);
+            document.addEventListener('DOMContentLoaded', () => {
+                initCarousels();
+                setupServiceCards();
+            });
         } else {
             initCarousels();
+            setupServiceCards();
         }
 
         // Hacer funciones globales para que sean accesibles desde el HTML dinámico
